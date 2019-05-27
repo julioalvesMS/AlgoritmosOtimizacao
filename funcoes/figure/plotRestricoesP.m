@@ -8,8 +8,8 @@ function plotRestricoesP(data, fnc_name)
     hold all;
     legends = [];
     for i=1:size(data.traceback.h, 2)
-        plot(data.traceback.k, data.traceback.h(:,i));
-        legends{i} = sprintf('h_%d(x)', i);
+        plot(data.traceback.k, data.traceback.g(:,i));
+        legends{i} = sprintf('g_%d(x)', i);
     end
     
     plot(data.traceback.k, data.traceback.P, '--');

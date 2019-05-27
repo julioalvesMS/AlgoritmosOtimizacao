@@ -1,4 +1,4 @@
-function [x, y, i, data] = QuaseNewtonMultidimensional(fnc, grad, x0)
+function [x, y, i, data] = QuaseNewtonMultidimensional(fnc, grad, x0, res_chk)
 %GRADIENTE Summary of this function goes here
 %   Detailed explanation goes here
     
@@ -7,6 +7,11 @@ function [x, y, i, data] = QuaseNewtonMultidimensional(fnc, grad, x0)
     x = x0;
     traceback = [];
     stop_condition = 0;
+    
+    check_restrition = 0;
+    if nargin >= 4
+        check_restrition = 1;
+    end
     
     D = eye(length(x0));
     
@@ -39,7 +44,12 @@ function [x, y, i, data] = QuaseNewtonMultidimensional(fnc, grad, x0)
         while 1
             [fd, alpha] = BuscaDicotomica(fnc, inferior, superior, d, x);
             
-            if fd>fi
+            retry = fd>fi;
+            if check_restrition
+                retry = retry || ~res_chk(x + alpha*d);
+            end
+            
+            if retry
                 superior = superior/10;
             else
                 break;
