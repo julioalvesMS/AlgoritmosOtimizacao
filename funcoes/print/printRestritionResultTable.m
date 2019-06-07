@@ -8,11 +8,11 @@ function printRestritionResultTable(data_list)
     
     restricoes_h = 0;
     for i=1:length(data_list)
-        restricoes_h = max([restricoes_h length(data_list{i}.h)]);
+        restricoes_h = max([restricoes_h length(data_list(i).h)]);
     end
     restricoes_g = 0;
     for i=1:length(data_list)
-        restricoes_g = max([restricoes_g length(data_list{i}.g)]);
+        restricoes_g = max([restricoes_g length(data_list(i).g)]);
     end
 
     tabela = '';
@@ -23,7 +23,7 @@ function printRestritionResultTable(data_list)
     
     tabela = [tabela ' & '];
     for i=1:n
-        tabela = [tabela '\\' sprintf('textbf{$ f_%d $}', i) dataGlue(i, n)];
+        tabela = [tabela '\\' sprintf('textbf{$ P%d $}', i) dataGlue(i, n)];
     end
     
     tabela = [tabela '\\hline' lnbrk];
@@ -32,10 +32,10 @@ function printRestritionResultTable(data_list)
         tabela = [tabela sprintf('$ h_%d(', j) '\\textbf{x}) $ & '];
         for i=1:n
             
-            if j>length(data_list{i}.h)
+            if j>length(data_list(i).h)
                 value = ' - ';
-            elseif data_list{i}.stop_condition > 0
-                value = sprintf('%.8f', data_list{i}.h(j));
+            elseif data_list(i).stop_condition > 0
+                value = sprintf('%.8f', data_list(i).h(j));
             else
                 value = NConv;
             end
@@ -47,22 +47,22 @@ function printRestritionResultTable(data_list)
         tabela = [tabela sprintf('$ g_%d(', j) '\\textbf{x}) $ & '];
         for i=1:n
             
-            if j>length(data_list{i}.g)
+            if j>length(data_list(i).g)
                 value = ' - ';
-            elseif data_list{i}.stop_condition > 0
-                value = sprintf('%.8f', data_list{i}.g(j));
+            elseif data_list(i).stop_condition > 0
+                value = sprintf('%.8f', data_list(i).g(j));
             else
                 value = NConv;
             end
             tabela = [tabela value dataGlue(i, n)];
         end
     end
-    
-    tabela = [tabela '$ P(\\textbf{x}, \\textbf{c}) $ & '];
-    for i=1:n
-        value = sprintf('%.8f', data_list{i}.P);
-        tabela = [tabela value dataGlue(i, n)];
-    end
+
+%     tabela = [tabela '$ P(\\textbf{x}, \\textbf{c}) $ & '];
+%     for i=1:n
+%         value = sprintf('%.8f', data_list(i).P);
+%         tabela = [tabela value dataGlue(i, n)];
+%     end
     
     tabela = [tabela '\\hline' lnbrk];
     tabela = [tabela '\\end{tabular}' lnbrk];

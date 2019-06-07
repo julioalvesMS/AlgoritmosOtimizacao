@@ -18,7 +18,7 @@ function [x, y, i, data] = Barreira(P)
     for i = 1:limite_iteracoes
         
         Fpp = @(x) (P.fnc(x) - c*(1./P.g_fnc(x)));
-        Gpp = @(x) (P.grad(x) + P.g_grad(x)* ((1./P.g_fnc(x)^2).*c'));
+        Gpp = @(x) (P.grad(x) + P.g_grad(x)* ((1./P.g_fnc(x).^2).*c'));
         Res = @(x) ( min(P.g_fnc(x) <= 0) & min(abs(P.h_fnc(x)) <= tolerance) );
         
         traceback.x(i,:) = x;
@@ -32,7 +32,7 @@ function [x, y, i, data] = Barreira(P)
         
         [x, y] = QuaseNewtonMultidimensional(Fpp, Gpp, x, Res);
         
-        if  max(abs(traceback.x(end,:)'-x)) > E && c>0
+        if  max(abs(traceback.x(end,:)'-x)) > E
             c = c/step;
         else
             stop_condition = 1;

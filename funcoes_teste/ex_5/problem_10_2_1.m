@@ -24,6 +24,9 @@ classdef problem_10_2_1
         function h = h_fnc(x)
             h = 0;
         end
+        function h = h_grad(x)
+            h = 0;
+        end
         
         function g = g_fnc(x)
             
@@ -50,6 +53,13 @@ classdef problem_10_2_1
                 2*x1
                 -1
             ];
+        end
+        
+        function h = has_h()
+            h=0;
+        end
+        function g = has_g()
+            g=1;
         end
     end
 end

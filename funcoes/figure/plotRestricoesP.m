@@ -7,13 +7,19 @@ function plotRestricoesP(data, fnc_name)
     figure;
     hold all;
     legends = [];
-    for i=1:size(data.traceback.h, 2)
+    l = size(data.traceback.h, 2);
+    m = size(data.traceback.g, 2);
+    for i=1:l
+        plot(data.traceback.k, data.traceback.h(:,i));
+        legends{i} = sprintf('h_%d(x)', i);
+    end
+    for i=1:m
         plot(data.traceback.k, data.traceback.g(:,i));
-        legends{i} = sprintf('g_%d(x)', i);
+        legends{i+l} = sprintf('g_%d(x)', i);
     end
     
-    plot(data.traceback.k, data.traceback.P, '--');
-    legends{i+1} = 'P(x)';
+%     plot(data.traceback.k, data.traceback.P, '--');
+%     legends{l+m+1} = 'P(x)';https://odyssey.fem.unicamp.br/AlunoEsp
     
     hold off;
     legend(legends);

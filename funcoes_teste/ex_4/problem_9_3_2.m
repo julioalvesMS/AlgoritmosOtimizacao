@@ -24,7 +24,7 @@ classdef problem_9_3_2
             ];
         end
         
-        function g = res_fnc(x)
+        function g = h_fnc(x)
             g1 = @problem_9_3_2.g1;
             g2 = @problem_9_3_2.g2;
             g3 = @problem_9_3_2.g3;
@@ -35,7 +35,7 @@ classdef problem_9_3_2
                 g3(x)
             ];
         end
-        function g = res_grad(x)
+        function g = h_grad(x)
             g1_grad = @problem_9_3_2.g1_grad;
             g2_grad = @problem_9_3_2.g2_grad;
             g3_grad = @problem_9_3_2.g3_grad;
@@ -89,6 +89,20 @@ classdef problem_9_3_2
                 0
                 0
             ];
+        end
+        
+        function g = g_fnc(x)
+            g = 0;
+        end
+        function g = g_grad(x)
+            g = 0;
+        end
+        
+        function h = has_h()
+            h=1;
+        end
+        function g = has_g()
+            g=0;
         end
     end
 end

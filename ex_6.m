@@ -1,4 +1,4 @@
-%% Exercício 4
+%% Exercício 6
 
 %% Inicialização
 close all; clc; clear;
@@ -6,6 +6,8 @@ close all; clc; clear;
 addpath(genpath('funcoes'))
 addpath(genpath('algoritmos'))
 addpath(genpath('funcoes_teste'))
+
+[~, ~] = mkdir('imagens');
 
 %% Problemas
 
@@ -16,11 +18,13 @@ P3 = problem_10_2_1;
 
 %% 
 
-[x1, y1, i1, P1_data] = Penalidades(P1);
-[x2, y2, i2, P2_data] = Penalidades(P2);
+[x1, y1, i1, P1_data] = LagrangianoAumentado(P1);
+[x2, y2, i2, P2_data] = LagrangianoAumentado(P2);
+[x3, y3, i3, P3_data] = LagrangianoAumentado(P3);
 
 P1_data = remove_useless_data(P1, P1_data);
 P2_data = remove_useless_data(P2, P2_data);
+P3_data = remove_useless_data(P3, P3_data);
 
 %%
 global P
@@ -66,27 +70,53 @@ data.iterations = OUTPUT.iterations;
 data.method_name = 'fmincon';
 P2_fmincon = data;
 
+P = P3;
+PROBLEM_3.solver = 'fmincon';
+PROBLEM_3.options = options;
+PROBLEM_3.objective = @P.fnc;
+PROBLEM_3.x0 = P.x0;
+PROBLEM_3.nonlcon = @nonlcon;
+
+[X,FVAL,EXITFLAG,OUTPUT] = fmincon(PROBLEM_3);
+
+data.x = X;
+data.y = FVAL;
+data.h = P.h_fnc(X);
+data.g = P.g_fnc(X);
+data.P = 0;
+data.k = OUTPUT.iterations;
+data.stop_condition = EXITFLAG;
+data.iterations = OUTPUT.iterations;
+data.method_name = 'fmincon';
+P3_fmincon = data;
+
+
 P1_fmincon = remove_useless_data(P1, P1_fmincon);
 P2_fmincon = remove_useless_data(P2, P2_fmincon);
+P3_fmincon = remove_useless_data(P3, P3_fmincon);
+
 
 %%
 
-printOtimizationResultTable([P1_data P2_data])
-printRestritionResultTable([P1_data P2_data])
+printOtimizationResultTable([P1_data P2_data P3_data])
+printRestritionResultTable([P1_data P2_data P3_data])
 
 plotMultidimensionalY(P1_data, 'P1')
 plotMultidimensionalY(P2_data, 'P2')
+plotMultidimensionalY(P3_data, 'P3')
 
 plotMultidimensionalX(P1_data, 'P1')
 plotMultidimensionalX(P2_data, 'P2')
+plotMultidimensionalX(P3_data, 'P3')
 
 plotRestricoesP(P1_data, 'P1')
 plotRestricoesP(P2_data, 'P2')
+plotRestricoesP(P3_data, 'P3')
 
 %%
 
-printOtimizationResultTable([P1_fmincon P2_fmincon])
-printRestritionResultTable([P1_fmincon P2_fmincon])
+printOtimizationResultTable([P1_fmincon P2_fmincon P3_fmincon])
+printRestritionResultTable([P1_fmincon P2_fmincon P3_fmincon])
 
 function [c,ceq] = nonlcon(x)
     global P

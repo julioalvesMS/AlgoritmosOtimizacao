@@ -28,7 +28,7 @@ function [y,x,k,data] = BuscaDicotomica(fnc, inferior, superior, d, xi)
         end
         
         
-        if superior - inferior < l
+        if superior - inferior <= l
             condicao_parada = 1;
             break;
         end
